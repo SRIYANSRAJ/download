@@ -1,75 +1,111 @@
 <!doctype html>
-
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Google Drive Folder — Quick Access</title>
-  <style>
-    :root{--bg:#0f172a;--card:#0b1220;--muted:#9aa4b2;--accent:#7c3aed}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#071024 0%, #071432 100%);color:#e6eef8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{width:100%;max-width:980px;background:rgba(255,255,255,0.03);border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6);overflow:hidden}
-    header{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:16px}
-    h1{font-size:20px;margin:0}
-    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
-    .controls{padding:16px 24px;display:flex;gap:12px;align-items:center}
-    .btn{appearance:none;border:0;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer}
-    .btn-primary{background:linear-gradient(90deg,var(--accent),#5b21b6);color:white}
-    .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .iframe-wrap{height:640px;background:#071022}
-    iframe{width:100%;height:100%;border:0}
-    .note{padding:12px 24px;color:var(--muted);font-size:13px;border-top:1px solid rgba(255,255,255,0.02)}
-    @media (max-width:640px){.iframe-wrap{height:420px;padding:0}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Google Drive Folder — Quick Access</title>
+<style>
+:root{--bg:#0f172a;--card:#0b1220;--muted:#9aa4b2;--accent:#7c3aed}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:linear-gradient(180deg,#071024 0%, #071432 100%);
+  color:#e6eef8;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px
+}
+.card{
+  width:100%;
+  max-width:980px;
+  background:rgba(255,255,255,0.03);
+  border-radius:12px;
+  box-shadow:0 8px 30px rgba(2,6,23,0.6);
+  overflow:hidden
+}
+header{
+  padding:20px 24px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  display:flex;
+  align-items:center;
+  gap:16px
+}
+h1{font-size:20px;margin:0}
+p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+.controls{
+  padding:16px 24px;
+  display:flex;
+  gap:12px;
+  align-items:center
+}
+.btn{
+  appearance:none;
+  border:0;
+  padding:10px 14px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer
+}
+.btn-primary{background:linear-gradient(90deg,var(--accent),#5b21b6);color:white}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.iframe-wrap{height:640px;background:#071022}
+iframe{width:100%;height:100%;border:0}
+.note{padding:12px 24px;color:var(--muted);font-size:13px;border-top:1px solid rgba(255,255,255,0.02)}
+@media (max-width:640px){.iframe-wrap{height:420px;padding:0}}
+</style>
 </head>
 <body>
-  <div class="card" role="main">
-    <header>
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path d="M4 3h16v18H4z" fill="#10213a"/>
-        <path d="M7 8h10v2H7zM7 12h10v2H7z" fill="#7c3aed"/>
-      </svg>
-      <div>
-        <h1>Open Google Drive Folder</h1>
-        <p class="lead">Folder: <strong>1zmM-WYhpdvuQ693Wj3UmQxMjZ5i-_I9H</strong></p>
-      </div>
-    </header><div class="controls">
-  <button class="btn btn-primary" id="openBtn">Open in new tab</button>
-  <button class="btn btn-outline" id="copyBtn">Copy folder link</button>
-  <div style="margin-left:auto;color:var(--muted);font-size:13px">Preview below — if it doesn't load, use the open button</div>
+<div class="card" role="main">
+  <header>
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M4 3h16v18H4z" fill="#10213a"/>
+      <path d="M7 8h10v2H7zM7 12h10v2H7z" fill="#7c3aed"/>
+    </svg>
+    <div>
+      <h1>Open Google Drive Folder</h1>
+      <p class="lead">Folder: <strong>1MHP0WL9FGdoFPO9y5ncwrsbhgxs02DjH</strong></p>
+    </div>
+  </header>
+  <div class="controls">
+    <button class="btn btn-primary" id="openBtn">Open in new tab</button>
+    <button class="btn btn-outline" id="copyBtn">Copy folder link</button>
+    <div style="margin-left:auto;color:var(--muted);font-size:13px">Preview below — if it doesn't load, use the open button</div>
+  </div>
+  <div class="iframe-wrap" id="preview">
+    <!-- If embedding fails due to permissions, the fallback link below will still work -->
+    <iframe id="driveFrame" src="https://drive.google.com/embeddedfolderview?id=1MHP0WL9FGdoFPO9y5ncwrsbhgxs02DjH#grid" title="Google Drive Folder Preview"></iframe>
+  </div>
+  <div class="note">
+    <strong>Note:</strong> If the folder is private or requires sign-in, the embedded preview may not show. Click "Open in new tab" to open the folder directly on Google Drive. You can replace the folder ID in the iframe <code>src</code> if you want to point to a different folder.
+  </div>
 </div>
 
-<div class="iframe-wrap" id="preview">
-  <!-- If embedding fails due to permissions, the fallback link below will still work -->
-  <iframe id="driveFrame" src="https://drive.google.com/embeddedfolderview?id=1zmM-WYhpdvuQ693Wj3UmQxMjZ5i-_I9H#grid" title="Google Drive Folder Preview"></iframe>
-</div>
+<script>
+const folderId = '1MHP0WL9FGdoFPO9y5ncwrsbhgxs02DjH';
+const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
 
-<div class="note">
-  <strong>Note:</strong> If the folder is private or requires sign-in, the embedded preview may not show. Click "Open in new tab" to open the folder directly on Google Drive. You can replace the folder ID in the iframe <code>src</code> if you want to point to a different folder.
-</div>
+document.getElementById('openBtn').addEventListener('click', ()=> window.open(folderUrl, '_blank'));
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(folderUrl);
+    const t = document.getElementById('copyBtn');
+    const old = t.innerText;
+    t.innerText = 'Copied!';
+    setTimeout(()=> t.innerText = old, 1500);
+  }catch(e){
+    alert('Could not copy automatically — use the link: ' + folderUrl);
+  }
+});
 
-  </div>  <script>
-    const folderId = '1zmM-WYhpdvuQ693Wj3UmQxMjZ5i-_I9H';
-    const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
-    document.getElementById('openBtn').addEventListener('click', ()=> window.open(folderUrl, '_blank'));
-    document.getElementById('copyBtn').addEventListener('click', async ()=>{
-      try{
-        await navigator.clipboard.writeText(folderUrl);
-        const t = document.getElementById('copyBtn');
-        const old = t.innerText;
-        t.innerText = 'Copied!';
-        setTimeout(()=> t.innerText = old, 1500);
-      }catch(e){
-        alert('Could not copy automatically — use the link: ' + folderUrl);
-      }
-    });
-
-    // Accessibility: if iframe fails to load (permissions), show a visible fallback link
-    const frame = document.getElementById('driveFrame');
-    frame.addEventListener('error', ()=>{
-      const preview = document.getElementById('preview');
-      preview.innerHTML = `<div style="padding:28px;color:#cfe7ff;font-size:16px"><p>Preview could not load. Open the folder directly:</p><p><a href="${folderUrl}" target="_blank" rel="noopener" style="color:#b9b3ff">Open Google Drive folder</a></p></div>`;
-    });
-  </script></body>
+// Accessibility: if iframe fails to load (permissions), show a visible fallback link
+const frame = document.getElementById('driveFrame');
+frame.addEventListener('error', ()=>{
+  const preview = document.getElementById('preview');
+  preview.innerHTML = `<div style="padding:28px;color:#cfe7ff;font-size:16px"><p>Preview could not load. Open the folder directly:</p><p><a href="${folderUrl}" target="_blank" rel="noopener" style="color:#b9b3ff">Open Google Drive folder</a></p></div>`;
+});
+</script>
+</body>
 </html>
